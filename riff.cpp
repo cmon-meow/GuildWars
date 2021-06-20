@@ -5,6 +5,20 @@
 //maybe helpful info when I have time
 //http://download.linuxsampler.org/doc/libgig/api/classRIFF_1_1File.html
 
+
+//based on old forum posts these are possibly .gr2(customization unknown) format
+//The core format is based on .riff chunk format(maybe the nested data is granny)
+//I didn't see any mention of granny.dll, we should be clear of any encryption/decompression
+
+//based on initial test of (small file - size) the header should be 27 bytes long.
+//crc32 should be somewhere, I'm guessing by 32 it'll be 4 bytes.
+//leaves us with a handfull of unknowns.
+//at least one corresponds to group numbers so whey know where to update.
+//another could be version number to know what is updated already.
+//if all the guessed values were 4 bytes to waste space we'd be left with 4 bytes to fill.
+//most unknowns will be shorts, they are big enough, and shorts were common when the game released.
+//4 bytes could be an objectID.
+
 struct
 {
 /*4 byte*/unsigned long signature;//anff stored ffna due to encoding
@@ -12,6 +26,7 @@ struct
 /*2 byte*/short unknown0;//type2(3000/4000/4012)-type8(2)-type4(0)
 /*2 byte*/short unknown1;//type2(0)-type8(0)-type4(0)
 /*2 byte*/short size;//only for ffna2/ffna8, ffna3, and ffna4 has arbitrary shit here
+/*16 byte?*/
 	unsigned char data[size]//first guess based on known riff file formats
 }ArenaNetFileFormat;
 
