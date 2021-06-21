@@ -10,14 +10,7 @@
 //The core format is based on .riff chunk format(maybe the nested data is granny)
 //I didn't see any mention of granny.dll, we should be clear of any encryption/decompression
 
-//based on initial test of (small file - size) the header should be 27 bytes long.
-//crc32 should be somewhere, I'm guessing by 32 it'll be 4 bytes.
-//leaves us with a handfull of unknowns.
-//at least one corresponds to group numbers so whey know where to update.
-//another could be version number to know what is updated already.
-//if all the guessed values were 4 bytes to waste space we'd be left with 4 bytes to fill.
-//most unknowns will be shorts, they are big enough, and shorts were common when the game released.
-//4 bytes could be an objectID.
+//based on initial test of (small file - size) the header should be 27 bytes (ffna 2 and 8).
 
 struct
 {
@@ -26,7 +19,8 @@ struct
 /*2 byte*/short unknown0;//type2(3000/4000/4012)-type8(2)-type4(0)
 /*2 byte*/short unknown1;//type2(0)-type8(0)-type4(0)
 /*2 byte*/short size;//only for ffna2/ffna8, ffna3, and ffna4 has arbitrary shit here
-/*16 byte?*/
+short unknown2//0's so far maybe 4 byte alignment padding
+/*14 byte?*/
 	unsigned char data[size]//first guess based on known riff file formats
 }ArenaNetFileFormat;
 
@@ -185,17 +179,11 @@ int __cdecl FUN_0085d740(int *param_1,int param_2,int *param_3)
   int local_8;
   
   iVar1 = FUN_0046df70(param_1,0);
-  if (iVar1 == 0) {
-                    
-    FUN_00482620(&DAT_009b22bc,"p:\\code\\base\\services\\riff.cpp",0x10e);
-  }
-  if (param_3 != (int *)NULL) {
-    *param_3 = 0;
-  }
-  if (param_3 == (int *)NULL) {
-                    
-    FUN_00482620("bytes","p:\\code\\base\\services\\riff.cpp",0x110);
-  }
+  if (iVar1 == 0) FUN_00482620(&DAT_009b22bc,"p:\\code\\base\\services\\riff.cpp",0x10e);
+  
+  if (param_3 != (int *)NULL) *param_3 = 0;//ghidra fuckery?
+  if (param_3 == (int *)NULL) FUN_00482620("bytes","p:\\code\\base\\services\\riff.cpp",0x110);
+  
   if (iVar1 != 0 && param_3 != (int *)NULL) {
     local_8 = param_2;
     piVar2 = FUN_0048a990(iVar1 + 0x18,&local_8);
@@ -329,15 +317,100 @@ byte __cdecl FUN_0085da50(int param_1,uint param_2)
 {
   int *piVar1;
   
-  if (param_2 == 0) {
-                    
-    FUN_00482620("data","p:\\code\\base\\services\\riff.cpp",0x80);
-  }
+  if (param_2 == 0) FUN_00482620("data","p:\\code\\base\\services\\riff.cpp",0x80);
+  
   piVar1 = (int *)(~-(uint)(param_1 + param_2 < param_2 + 5) & param_2);
-  if (((piVar1 != (int *)NULL) && (*piVar1 == 0x616e6666)) && (*(byte *)(piVar1 + 1) < 9)) {
-    return *(byte *)(piVar1 + 1);
+  
+  if (((piVar1) && (*piVar1 == 0x616e6666)) && (*(byte *)(piVar1 + 1) < 9)) return *(byte *)(piVar1 + 1);//return anff type if type is valid.
+  
+  return 0;
+}
+
+undefined4 __cdecl FUN_007b6370(uint param_1,int *param_2)
+{
+  byte bVar1;
+  undefined3 extraout_var;
+  
+  bVar1 = FUN_0085da50(param_1,(uint)param_2);
+  if (CONCAT31(extraout_var,bVar1) != 0) {
+    switch(CONCAT31(extraout_var,bVar1)) {
+    case 1:
+      return 2;
+    case 2:
+      return 4;
+    case 3:
+      return 3;
+    default:
+                    
+      FUN_00482620("Invalid riff type","p:\\code\\gw\\download\\dnbloat.cpp",0x3a);
+    case 5:
+      return 5;
+    case 8:
+      return 7;
+    }
+  }
+  if (3 < param_1) {
+    if (*param_2 == 0x58455441) return 1;//XETA
+    
+    if (*param_2 == 0x58545441) return 6;//XTTA
+    
   }
   return 0;
+}
+
+void __cdecl FUN_007b6220(wchar_t *param_1,int *param_2,uint *param_3,undefined4 *param_4,int **param_5, int **param_6)
+{
+  bool bVar1;
+  undefined4 uVar2;
+  undefined3 extraout_var;
+  uint uVar3;
+  int iVar4;
+  
+  uVar2 = FUN_007b6370((uint)param_2,(int *)param_3);
+  iVar4 = 1;
+  *param_4 = 0;
+  switch(uVar2) {
+  case 0:
+  case 7:
+    return;
+  case 1:
+    iVar4 = FUN_00629fc0((uint)param_2,param_3,(int)param_5,(undefined **)param_6);
+    break;
+  case 2:
+                    
+    FUN_00482620("Server map","p:\\code\\gw\\download\\dnbloat.cpp",0x8e);
+  case 3:
+    iVar4 = FUN_00696550(param_1,(uint)param_2,(int *)param_3,(LPCVOID *)NULL,0,0);
+    break;
+  case 4:
+  case 5:
+    bVar1 = FUN_00728d60(param_1,(uint)param_2,(int *)param_3,param_6);
+    iVar4 = CONCAT31(extraout_var,bVar1);
+    break;
+  case 6:
+    FUN_00697a60((uint)param_2,param_3,param_5);
+    break;
+  default:
+                    
+    FUN_00482620("No valid case for switch variable \'fileType\'",
+                 "p:\\code\\gw\\download\\dnbloat.cpp",0xab);
+  }
+  if ((param_6 == (int **)NULL) || (*param_6 == (int *)NULL)) {
+    if (iVar4 == 0) {
+      *param_4 = 1;
+    }
+    else {
+      if (param_5[2] != (int *)NULL) {
+        if ((param_2 <= param_5[2]) &&
+           (uVar3 = FUN_0046bc00(*param_5,(int *)param_3,(uint)param_2), uVar3 == 0)) {
+          return;
+        }
+        FUN_0046d210(2,"Bloating mismatch %#x type %u");
+        return;
+      }
+    }
+  }
+  return;
 }
 
 int * __cdecl FUN_0085daa0(int *param_1,int param_2)
