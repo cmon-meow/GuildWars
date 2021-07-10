@@ -55,9 +55,8 @@ int * __cdecl FUN_0085d3c0(undefined *param_1,uint dataBytes,int *data)
     FUN_0046bc70(puVar6,data,dataBytes);
     data = (int *)ppuVar5[5];
   }
-  else {
-    ppuVar5[5] = (undefined *)data;
-  }
+  else ppuVar5[5] = (undefined *)data;
+  
   local_8 = (int *)((int)data + dataBytes);
   if ((local_8 < (int *)((int)data + 5U)) || (data == (int *)NULL)) {
                     
@@ -142,58 +141,66 @@ LAB_0085d5a3:
   return piVar8;
 }
 
-int * __cdecl FUN_0085d6b0(undefined *param_1)
+int * __cdecl FUN_0085d6b0(undefined *type)
 {
   undefined **ppuVar1;
   int *piVar2;
-  int iVar3;
+  /*int iVar3;
   
-  if ((param_1 == (undefined *)NULL) || (8 < (int)param_1)) {
-    iVar3 = 0;
-  }
-  else {
-    iVar3 = -1;
-  }
-  if ((param_1 != (undefined *)NULL) && ((int)param_1 < 9)) {
-    if (iVar3 == 0) {
-      return (int *)NULL;
-    }
+  if ((!type) || (8 < (int)type)) iVar3 = NULL;
+  else iVar3 = -1;
+  
+  if ((type) && ((int)type < 9))
+  {
+    if (iVar3 == 0) return (int *)NULL;
+    
     ppuVar1 = (undefined **)FUN_0047ce50(0x3c,0,"p:\\code\\base\\services\\riff.cpp",0x95);
     ppuVar1 = FUN_0085d1a0(ppuVar1);
-    ppuVar1[2] = param_1;
+    ppuVar1[2] = type;
     ppuVar1[3] = (undefined *)0x2;
     ppuVar1[4] = &DAT_00000005;
     ppuVar1[5] = (undefined *)NULL;
     piVar2 = FUN_0046dd80((int)ppuVar1,(int)"HRiff",0,0,0);
     return piVar2;
   }
-                    
-  FUN_00482620("type != RIFF_TYPE_INVALID && type < RIFF_TYPES","p:\\code\\base\\services\\riff.cpp"
-               ,0x92);
+  FUN_00482620("type != RIFF_TYPE_INVALID && type < RIFF_TYPES","p:\\code\\base\\services\\riff.cpp",0x92);*/
+  
+  //control flow was fucked
+  if ((!type) || ((int)type) > 8)
+  {
+	  FUN_00482620("type != RIFF_TYPE_INVALID && type < RIFF_TYPES","p:\\code\\base\\services\\riff.cpp",0x92);
+	  return (int *)NULL;
+  }
+   ppuVar1 = (undefined **)FUN_0047ce50(0x3c,0,"p:\\code\\base\\services\\riff.cpp",0x95);
+    ppuVar1 = FUN_0085d1a0(ppuVar1);
+    ppuVar1[2] = type;
+    ppuVar1[3] = (undefined *)0x2;
+    ppuVar1[4] = &DAT_00000005;
+    ppuVar1[5] = (undefined *)NULL;
+    piVar2 = FUN_0046dd80((int)ppuVar1,(int)"HRiff",0,0,0);
+    return piVar2;
 }
 
-int __cdecl FUN_0085d740(int *param_1,int param_2,int *param_3)
+int __cdecl FUN_0085d740(int *type,int param_2,int *param_3)
 {
   int iVar1;
   int *piVar2;
   int local_8;
   
   iVar1 = FUN_0046df70(param_1,0);
-  if (iVar1 == 0) FUN_00482620(&DAT_009b22bc,"p:\\code\\base\\services\\riff.cpp",0x10e);
+  if (!iVar1) FUN_00482620(&DAT_009b22bc,"p:\\code\\base\\services\\riff.cpp",0x10e);
   
-  if (param_3 != (int *)NULL) *param_3 = 0;//ghidra fuckery?
-  if (param_3 == (int *)NULL) FUN_00482620("bytes","p:\\code\\base\\services\\riff.cpp",0x110);
+  if (param_3) *param_3 = 0;//ghidra fuckery?
+  if (!param_3) FUN_00482620("bytes","p:\\code\\base\\services\\riff.cpp",0x110);
   
-  if (iVar1 != 0 && param_3 != (int *)NULL) {
+  if (iVar1 && param_3)
+  {
     local_8 = param_2;
     piVar2 = FUN_0048a990(iVar1 + 0x18,&local_8);
-    if (piVar2 != (int *)NULL) {
-      if ((~piVar2[1] & 1U) == 0) {
-                    
-        FUN_00482620("!(chunk->flags & CHUNK_FLAG_WRITE_LOCK)","p:\\code\\base\\services\\riff.cpp",
-                     0x117);
-      }
-      if (((piVar2[1] & 1U) == 0) && (piVar2[4] != 0)) {
+    if (piVar2){
+      if (!(~piVar2[1] & 1U)) FUN_00482620("!(chunk->flags & CHUNK_FLAG_WRITE_LOCK)","p:\\code\\base\\services\\riff.cpp", 0x117);
+      
+      if ((!(piVar2[1] & 1U)) && (!piVar2[4])) {
         piVar2[2] = piVar2[2] + 1;
         *param_3 = piVar2[4];
         return piVar2[3];
@@ -210,27 +217,18 @@ void __cdecl FUN_0085d810(int *param_1,int param_2)
   int local_8;
   
   iVar1 = FUN_0046df70(param_1,0);
-  if (iVar1 == 0) {
-                    
-    FUN_00482620(&DAT_009b22bc,"p:\\code\\base\\services\\riff.cpp",0x128);
-  }
-  if (iVar1 != 0) {
+  if (!iVar1) FUN_00482620(&DAT_009b22bc,"p:\\code\\base\\services\\riff.cpp",0x128);
+  
+  if (iVar1) {
     local_8 = param_2;
     piVar2 = FUN_0048a990(iVar1 + 0x18,&local_8);
-    if (piVar2 == (int *)NULL) {
-                    
-      FUN_00482620("chunk","p:\\code\\base\\services\\riff.cpp",0x12e);
-    }
-    if (piVar2[2] == 0) {
-                    
-      FUN_00482620("chunk->readLock","p:\\code\\base\\services\\riff.cpp",0x12f);
-    }
-    if (piVar2 != (int *)NULL && piVar2[2] != 0) {
-      if ((~piVar2[1] & 1U) == 0) {
-                    
-        FUN_00482620("!(chunk->flags & CHUNK_FLAG_WRITE_LOCK)","p:\\code\\base\\services\\riff.cpp",
-                     0x131);
-      }
+    if (!piVar2) FUN_00482620("chunk","p:\\code\\base\\services\\riff.cpp",0x12e);
+    
+    if (!piVar2[2]) FUN_00482620("chunk->readLock","p:\\code\\base\\services\\riff.cpp",0x12f);
+    
+    if (piVar2 && piVar2[2]) {
+      if (!(~piVar2[1] & 1U)) FUN_00482620("!(chunk->flags & CHUNK_FLAG_WRITE_LOCK)","p:\\code\\base\\services\\riff.cpp", 0x131);
+      
       piVar2[2] = piVar2[2] + -1;
     }
   }
@@ -257,14 +255,10 @@ void __cdecl FUN_0085d8d0(int *param_1,LPCVOID *param_2)
   
   iVar3 = FUN_0046df70(param_1,0);
   local_8 = iVar3;
-  if (iVar3 == 0) {
-                    
-    FUN_00482620(&DAT_009b22bc,"p:\\code\\base\\services\\riff.cpp",0xe7);
-  }
-  if (param_2 == (LPCVOID *)NULL) {
-                    
-    FUN_00482620("buffer","p:\\code\\base\\services\\riff.cpp",0xe8);
-  }
+  if (!iVar3) FUN_00482620(&DAT_009b22bc,"p:\\code\\base\\services\\riff.cpp",0xe7);
+  
+  if (!param_2) FUN_00482620("buffer","p:\\code\\base\\services\\riff.cpp",0xe8);
+  
   if (iVar3 != 0 && param_2 != (LPCVOID *)NULL) {
     local_20 = 0x616e6666;
     local_1c = *(undefined *)(iVar3 + 8);
@@ -317,7 +311,7 @@ byte __cdecl FUN_0085da50(int param_1,uint param_2)
 {
   int *piVar1;
   
-  if (param_2 == 0) FUN_00482620("data","p:\\code\\base\\services\\riff.cpp",0x80);
+  if (!param_2) FUN_00482620("data","p:\\code\\base\\services\\riff.cpp",0x80);
   
   piVar1 = (int *)(~-(uint)(param_1 + param_2 < param_2 + 5) & param_2);
   
@@ -361,15 +355,15 @@ undefined4 __cdecl FUN_007b6370(uint param_1,int *param_2)
 void __cdecl FUN_007b6220(wchar_t *param_1,int *param_2,uint *param_3,undefined4 *param_4,int **param_5, int **param_6)
 {
   bool bVar1;
-  undefined4 uVar2;
+  undefined4 fileType;
   undefined3 extraout_var;
   uint uVar3;
   int iVar4;
   
-  uVar2 = FUN_007b6370((uint)param_2,(int *)param_3);
+  fileType = FUN_007b6370((uint)param_2,(int *)param_3);
   iVar4 = 1;
   *param_4 = 0;
-  switch(uVar2) {
+  switch(fileType) {
   case 0:
   case 7:
     return;
@@ -392,19 +386,17 @@ void __cdecl FUN_007b6220(wchar_t *param_1,int *param_2,uint *param_3,undefined4
     break;
   default:
                     
-    FUN_00482620("No valid case for switch variable \'fileType\'",
-                 "p:\\code\\gw\\download\\dnbloat.cpp",0xab);
+    FUN_00482620("No valid case for switch variable \'fileType\'", "p:\\code\\gw\\download\\dnbloat.cpp",0xab);
   }
-  if ((param_6 == (int **)NULL) || (*param_6 == (int *)NULL)) {
-    if (iVar4 == 0) {
-      *param_4 = 1;
-    }
+  if ((!param_6) || (!*param_6)) {
+	  
+    if (!iVar4) *param_4 = 1;
+    
     else {
-      if (param_5[2] != (int *)NULL) {
-        if ((param_2 <= param_5[2]) &&
-           (uVar3 = FUN_0046bc00(*param_5,(int *)param_3,(uint)param_2), uVar3 == 0)) {
-          return;
-        }
+      if (param_5[2]) {
+        if ((param_2 <= param_5[2]) && (uVar3 = FUN_0046bc00(*param_5,(int *)param_3,(uint)param_2), uVar3 == 0)) 
+			return;
+        
         FUN_0046d210(2,"Bloating mismatch %#x type %u");
         return;
       }
@@ -423,22 +415,16 @@ int * __cdecl FUN_0085daa0(int *param_1,int param_2)
   int local_8;
   
   iVar2 = FUN_0046df70(param_1,0);
-  if (iVar2 == 0) {
-                    
-    FUN_00482620(&DAT_009b22bc,"p:\\code\\base\\services\\riff.cpp",0x13b);
-  }
+  if (!iVar2) FUN_00482620(&DAT_009b22bc,"p:\\code\\base\\services\\riff.cpp",0x13b);
+  
   uVar5 = *(uint *)(iVar2 + 0xc) & 6;
-  if (uVar5 == 0) {
-                    
-    FUN_00482620("riff->flags & (RIFF_CREATE_WRITE | RIFF_CREATE_APPEND)",
-                 "p:\\code\\base\\services\\riff.cpp",0x13d);
-  }
-  if (iVar2 == 0 || uVar5 == 0) {
-    return (int *)NULL;
-  }
+  if (!uVar5) FUN_00482620("riff->flags & (RIFF_CREATE_WRITE | RIFF_CREATE_APPEND)", "p:\\code\\base\\services\\riff.cpp",0x13d);
+  
+  if (!iVar2 || !uVar5) return (int *)NULL;
+  
   local_8 = param_2;
   piVar3 = FUN_0048a990((int)(int *)(iVar2 + 0x18),&local_8);
-  if (piVar3 == (int *)NULL) {
+  if (!piVar3) {
     puVar4 = (undefined4 *)FUN_0047ce50(0x38,2,"p:\\code\\base\\services\\riff.cpp",0x154);
     piVar3 = FUN_0085d0f0(puVar4);
     *piVar3 = param_2;
@@ -446,24 +432,15 @@ int * __cdecl FUN_0085daa0(int *param_1,int param_2)
     FUN_004720b0((int *)(iVar2 + 0x18),(int)piVar3,uVar5);
   }
   else {
-    if ((~(*(uint *)(iVar2 + 0xc) >> 2) & 1) == 0) {
-                    
-      FUN_00482620("!(riff->flags & RIFF_CREATE_APPEND)","p:\\code\\base\\services\\riff.cpp",0x145)
-      ;
-    }
-    if ((~piVar3[1] & 1U) == 0) {
-                    
-      FUN_00482620("!(chunk->flags & CHUNK_FLAG_WRITE_LOCK)","p:\\code\\base\\services\\riff.cpp",
-                   0x146);
-    }
-    if (piVar3[2] != 0) {
-                    
-      FUN_00482620("!chunk->readLock","p:\\code\\base\\services\\riff.cpp",0x147);
-    }
-    if ((~-(uint)(piVar3[2] != 0) &
-        ((piVar3[1] & 1U) != 0) - 1 & ((*(uint *)(iVar2 + 0xc) & 4) != 0) - 1) == 0) {
-      return (int *)NULL;
-    }
+    if (!(~(*(uint *)(iVar2 + 0xc) >> 2) & 1)) FUN_00482620("!(riff->flags & RIFF_CREATE_APPEND)","p:\\code\\base\\services\\riff.cpp",0x145);
+    
+    if (!(~piVar3[1] & 1U)) FUN_00482620("!(chunk->flags & CHUNK_FLAG_WRITE_LOCK)","p:\\code\\base\\services\\riff.cpp",0x146);
+    
+    if (piVar3[2] != 0) FUN_00482620("!chunk->readLock","p:\\code\\base\\services\\riff.cpp",0x147);
+    
+    if ((~-(uint)(piVar3[2] != 0) & ((piVar3[1] & 1U) != 0) - 1 & ((*(uint *)(iVar2 + 0xc) & 4) != 0) - 1) == 0) 
+		return (int *)NULL;
+    
     iVar1 = piVar3[4];
     if (iVar1 != 0) {
       if (iVar1 + 8U < *(uint *)(iVar2 + 0x10)) {
@@ -473,8 +450,7 @@ int * __cdecl FUN_0085daa0(int *param_1,int param_2)
         return piVar3 + 5;
       }
                     
-      FUN_00482620("riff->bytes > chunk->bytes + sizeof(ChunkHdr)",
-                   "p:\\code\\base\\services\\riff.cpp",0x14d);
+      FUN_00482620("riff->bytes > chunk->bytes + sizeof(ChunkHdr)", "p:\\code\\base\\services\\riff.cpp",0x14d);
     }
   }
   piVar3[1] = piVar3[1] | 1;
@@ -490,36 +466,22 @@ void __cdecl FUN_0085dc50(int *param_1,int param_2)
   int local_8;
   
   iVar2 = FUN_0046df70(param_1,0);
-  if (iVar2 == 0) {
-                    
-    FUN_00482620(&DAT_009b22bc,"p:\\code\\base\\services\\riff.cpp",0x164);
-  }
-  if (iVar2 != 0) {
+  
+  if (iVar2) {
     local_8 = param_2;
     piVar3 = FUN_0048a990(iVar2 + 0x18,&local_8);
-    if (piVar3 == (int *)NULL) {
-                    
-      FUN_00482620("chunk","p:\\code\\base\\services\\riff.cpp",0x16b);
-    }
-    if ((piVar3[1] & 1U) == 0) {
-                    
-      FUN_00482620("chunk->flags & CHUNK_FLAG_WRITE_LOCK","p:\\code\\base\\services\\riff.cpp",0x16c
-                  );
-    }
-    if (piVar3 != (int *)NULL && (piVar3[1] & 1U) != 0) {
-      if ((*(byte *)(iVar2 + 0xc) & 6) == 0) {
-                    
-        FUN_00482620("riff->flags & (RIFF_CREATE_WRITE | RIFF_CREATE_APPEND)",
-                     "p:\\code\\base\\services\\riff.cpp",0x16e);
-      }
+    if (!piVar3) FUN_00482620("chunk","p:\\code\\base\\services\\riff.cpp",0x16b);
+    
+    if (!(piVar3[1] & 1U)) FUN_00482620("chunk->flags & CHUNK_FLAG_WRITE_LOCK","p:\\code\\base\\services\\riff.cpp",0x16c);
+    
+    if (piVar3 && (piVar3[1] & 1U)) {
+      if (!(*(byte *)(iVar2 + 0xc) & 6)) FUN_00482620("riff->flags & (RIFF_CREATE_WRITE | RIFF_CREATE_APPEND)", "p:\\code\\base\\services\\riff.cpp",0x16e);
+      
       iVar1 = piVar3[7];
       piVar3[1] = piVar3[1] & 0xfffffffe;
       piVar3[4] = iVar1;
       piVar3[3] = piVar3[5];
-      if (iVar1 != 0) {
-        *(int *)(iVar2 + 0x10) = *(int *)(iVar2 + 0x10) + iVar1 + 8;
-      }
+      if (iVar1) *(int *)(iVar2 + 0x10) = *(int *)(iVar2 + 0x10) + iVar1 + 8;
     }
-  }
-  return;
+  } else FUN_00482620(&DAT_009b22bc,"p:\\code\\base\\services\\riff.cpp",0x164);
 }

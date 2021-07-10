@@ -38,19 +38,12 @@ void __cdecl FUN_006cff90(int param_1,int param_2)
 {
   if (param_1 == 1) {
     DAT_00a1ddf8 = param_2;
-    if (3 < param_2) {
-                    
-      FUN_00482620("s_prefs.reflections < MAP_PREF_REFLECTIONS_TERM",
-                   "p:\\code\\engine\\map\\terrain\\trnprefs.cpp",0x4b);
-    }
+    if (3 < param_2) FUN_00482620("s_prefs.reflections < MAP_PREF_REFLECTIONS_TERM", "p:\\code\\engine\\map\\terrain\\trnprefs.cpp",0x4b);
   }
-  else {
-    if ((param_1 == 2) && (DAT_00a1ddf4 = param_2, 4 < param_2)) {
-                    
-      FUN_00482620("s_prefs.texQuality < MAP_PREF_TEX_QUALITY_TERM",
-                   "p:\\code\\engine\\map\\terrain\\trnprefs.cpp",0x46);
+  else if ((param_1 == 2) && (DAT_00a1ddf4 = param_2, 4 < param_2)) {
+		FUN_00482620("s_prefs.texQuality < MAP_PREF_TEX_QUALITY_TERM", "p:\\code\\engine\\map\\terrain\\trnprefs.cpp",0x46);
     }
-  }
+  
   return;
 }
 
